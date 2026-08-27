@@ -1,0 +1,31 @@
+{
+  "enemies": [
+    {
+      "id": "slime",
+      "name": "史莱姆",
+      "maxHp": 30.0,
+      "moveSpeed": 2.0,
+      "damage": 5.0,
+      "score": 10,
+      "spritePath": "Sprites/Slime"
+    },
+    {
+      "id": "bat",
+      "name": "蝙蝠",
+      "maxHp": 20.0,
+      "moveSpeed": 4.0,
+      "damage": 8.0,
+      "score": 15,
+      "spritePath": "Sprites/Bat"
+    },
+    {
+      "id": "boss",
+      "name": "Boss",
+      "maxHp": 300.0,
+      "moveSpeed": 1.5,
+      "damage": 15.0,
+      "score": 200,
+      "spritePath": "Sprites/Boss"
+    }
+  ]
+}

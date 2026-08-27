@@ -1,0 +1,26 @@
+{
+  "levelId": 1,
+  "levelName": "第一关·草地",
+  "duration": 120.0,
+  "waveInterval": 3.0,
+  "waves": [
+    {
+      "enemyId": "slime",
+      "count": 12,
+      "spawnInterval": 2.0,
+      "startDelay": 2.0
+    },
+    {
+      "enemyId": "bat",
+      "count": 10,
+      "spawnInterval": 1.5,
+      "startDelay": 30.0
+    },
+    {
+      "enemyId": "boss",
+      "count": 1,
+      "spawnInterval": 0.0,
+      "startDelay": 90.0
+    }
+  ]
+}
