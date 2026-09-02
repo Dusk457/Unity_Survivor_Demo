@@ -40,10 +40,17 @@ namespace SurvivorDemo.Gameplay
 
         private void OnGameStateChanged(GameStateChangedEvent e)
         {
-            if (e.State == E_GameState.Playing)
-                StartLevel();
-            else if (e.State == E_GameState.GameOver)
-                StopAndClear();
+            switch (e.State)
+            {
+                case E_GameState.Playing:
+                    StartLevel();
+                    break;
+                case E_GameState.Paused:
+                    break;
+                default: 
+                    StopAndClear();
+                    break;
+            }
         }
 
         public void StartLevel()
@@ -55,10 +62,10 @@ namespace SurvivorDemo.Gameplay
                 return;
             }
 
-            ClearPools();
-
-            BuildPools();
             if (_spawning) return;
+
+            ClearPools();
+            BuildPools();
             _spawning = true;
 
             StartCoroutine(SpawnLoop());

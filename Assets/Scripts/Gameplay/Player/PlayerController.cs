@@ -45,6 +45,7 @@ namespace SurvivorDemo.Gameplay
         private void Update()
         {
             if (_dead) return;
+            if (GameManager.Instance == null || GameManager.Instance.State != E_GameState.Playing) return;
             _fireTimer -= Time.deltaTime;
 
             // 读取输入
@@ -143,16 +144,13 @@ namespace SurvivorDemo.Gameplay
             }
         }
 
-        // 重开时重置玩家状态（血量/死亡标记/武器冷却 + 动画/血条拉回默认）
         public void ResetPlayer()
         {
             CurrentHp = maxHp;
             _dead = false;
             _fireTimer = 0f;
 
-            // 让 HUD 血条刷新为满血
             EventManager.Instance?.Emit(new PlayerHpChangedEvent(CurrentHp, maxHp));
-            // 把动画状态机拉回默认（Stand），否则会一直停在 Dead
             if (_anim != null)
             {
                 _anim.Rebind();
