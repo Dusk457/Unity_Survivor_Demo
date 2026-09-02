@@ -33,7 +33,7 @@ namespace SurvivorDemo.Gameplay
             if (Vector2.Distance(transform.position, player.position) <= range && _attackCd <= 0f)
             {
                 anim?.SetTrigger(_enraged ? "attack2" : "attack1");
-                _attackCd = 1.2f;
+                _attackCd = 2.0f;
 
                 PlayerController pc = player.GetComponent<PlayerController>();
                 if (pc != null)
@@ -41,6 +41,11 @@ namespace SurvivorDemo.Gameplay
                     pc.TakeDamage(dmg);
                 }                   
             }
+        }
+
+        protected override void OnCollisionEnter2D(Collision2D collision)
+        {
+            
         }
 
         public override void TakeDamage(float dmg)

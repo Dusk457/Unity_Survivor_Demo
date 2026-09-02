@@ -71,7 +71,7 @@ namespace SurvivorDemo.Gameplay
             Destroy(gameObject);
         }
 
-        protected void OnCollisionEnter2D(Collision2D collision)
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
             PlayerController pc = collision.collider.GetComponent<PlayerController>();
             if (pc != null && config != null && !dead)

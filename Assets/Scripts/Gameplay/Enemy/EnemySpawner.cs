@@ -42,6 +42,8 @@ namespace SurvivorDemo.Gameplay
         {
             if (e.State == E_GameState.Playing)
                 StartLevel();
+            else if (e.State == E_GameState.GameOver)
+                StopAndClear();
         }
 
         public void StartLevel()
@@ -52,6 +54,8 @@ namespace SurvivorDemo.Gameplay
                 Debug.LogWarning("[Spawner] 找不到 Player"); 
                 return;
             }
+
+            ClearPools();
 
             BuildPools();
             if (_spawning) return;
@@ -112,6 +116,20 @@ namespace SurvivorDemo.Gameplay
             Vector2 pos = (Vector2)_player.position + Random.insideUnitCircle.normalized * spawnRadius;
             EnemyBase enemy = pool.Spawn(pos, Quaternion.identity);
             enemy.Init(cfg, _player);
+        }
+
+        private void ClearPools()
+        {
+            _slimePool?.DespawnAll();
+            _batPool?.DespawnAll();
+            _bossPool?.DespawnAll();
+        }
+
+        private void StopAndClear()
+        {
+            _spawning = false;
+            StopAllCoroutines();
+            ClearPools();
         }
 
         private void OnDestroy()

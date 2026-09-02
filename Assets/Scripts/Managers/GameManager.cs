@@ -1,5 +1,6 @@
 using UnityEngine;
 using SurvivorDemo.Data;
+using SurvivorDemo.Gameplay;
 
 namespace SurvivorDemo.Managers
 {
@@ -54,14 +55,19 @@ namespace SurvivorDemo.Managers
 
             // 2.读取存档
             SaveManager.Instance.Load();
+        }
 
-            // 3.进入主菜单
+        private void Start()
+        {
             SetState(E_GameState.MainMenu);
         }
 
         public void StartGame()
         {
             ResetSession();
+            // 重置玩家状态
+            var pc = FindObjectOfType<PlayerController>();
+            if (pc != null) pc.ResetPlayer();
             SetState(E_GameState.Playing);
         }
 
@@ -119,7 +125,7 @@ namespace SurvivorDemo.Managers
         private void SetState(E_GameState newState)
         {
             State = newState;
-            EventManager.Instance.Emit(new GameStateChangedEvent(newState));
+            EventManager.Instance?.Emit(new GameStateChangedEvent(newState));
         }
 
         public void SetStateFromUI(E_GameState newState)

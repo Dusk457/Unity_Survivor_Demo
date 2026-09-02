@@ -27,6 +27,7 @@ namespace SurvivorDemo.Gameplay
         private PlayerStateMachine _sm;
         private Transform _cachedTransform;
         private Animator _anim;
+        private bool _dead;
 
         private void Awake()
         {
@@ -43,6 +44,7 @@ namespace SurvivorDemo.Gameplay
 
         private void Update()
         {
+            if (_dead) return;
             _fireTimer -= Time.deltaTime;
 
             // 读取输入
@@ -134,9 +136,27 @@ namespace SurvivorDemo.Gameplay
 
             if (CurrentHp <= 0f)
             {
+                _dead = true;
                 _sm.SetDead();
                 if (_anim != null) _anim.SetTrigger("Dead");
                 GameManager.Instance.GameOver();
+            }
+        }
+
+        // 重开时重置玩家状态（血量/死亡标记/武器冷却 + 动画/血条拉回默认）
+        public void ResetPlayer()
+        {
+            CurrentHp = maxHp;
+            _dead = false;
+            _fireTimer = 0f;
+
+            // 让 HUD 血条刷新为满血
+            EventManager.Instance?.Emit(new PlayerHpChangedEvent(CurrentHp, maxHp));
+            // 把动画状态机拉回默认（Stand），否则会一直停在 Dead
+            if (_anim != null)
+            {
+                _anim.Rebind();
+                _anim.Update(0f);
             }
         }
     }

@@ -22,7 +22,7 @@
       "id": "boss",
       "name": "Boss",
       "maxHp": 300.0,
-      "moveSpeed": 1.5,
+      "moveSpeed": 3.0,
       "damage": 15.0,
       "score": 200,
       "spritePath": "Sprites/Boss"
