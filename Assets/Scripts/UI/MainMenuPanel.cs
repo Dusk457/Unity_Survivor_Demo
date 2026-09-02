@@ -9,6 +9,7 @@ namespace SurvivorDemo.UI
     {
         public Button startButton;
         public Button quitButton;
+        public Button settingsButton;
         public TextMeshProUGUI bestScoreText;
 
         public override void OnShow(System.Action onClosed = null)
@@ -22,6 +23,12 @@ namespace SurvivorDemo.UI
         {
             if (startButton != null) startButton.onClick.AddListener(OnStart);
             if (quitButton != null) quitButton.onClick.AddListener(OnQuit);
+            if (settingsButton != null) settingsButton.onClick.AddListener(OnSettings);
+        }
+
+        private void OnSettings()
+        {
+            UIManager.Instance.Show("SettingsPanel");
         }
 
         private void OnStart()

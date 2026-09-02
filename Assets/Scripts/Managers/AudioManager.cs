@@ -1,4 +1,5 @@
 using UnityEngine;
+using SurvivorDemo.Data;
 
 namespace SurvivorDemo.Managers
 {
@@ -37,7 +38,20 @@ namespace SurvivorDemo.Managers
             _sfxSource = gameObject.AddComponent<AudioSource>();
             _bgmSource.loop = true;
             _bgmSource.playOnAwake = false;
+            ApplyVolume();
             PlayBgm();
+        }
+
+        public void SetVolumes(float bgmVol, float sfxVol)
+        {
+            if (_bgmSource != null) _bgmSource.volume = Mathf.Clamp01(bgmVol);
+            if (_sfxSource != null) _sfxSource.volume = Mathf.Clamp01(sfxVol);
+        }
+
+        private void ApplyVolume()
+        {
+            if (SaveManager.Instance != null)
+                SetVolumes(SaveManager.Instance.Data.bgmVolume, SaveManager.Instance.Data.sfxVolume);
         }
 
         public void PlayBgm()

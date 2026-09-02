@@ -68,5 +68,7 @@ namespace SurvivorDemo.Data
         public int totalKills;
         public float playTime;
         public string playerName = "无名勇者";
+        public float bgmVolume = 1f;   // 音乐音量（0~1）
+        public float sfxVolume = 1f;   // 音效音量（0~1）
     }
 }
