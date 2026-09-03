@@ -46,6 +46,11 @@ namespace SurvivorDemo.UI
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                UIManager.Instance?.Show("InventoryPanel");
+            }
+               
             if (timeText != null && GameManager.Instance.State == E_GameState.Playing)
                 timeText.text = "时间 " + Mathf.FloorToInt(GameManager.Instance.CurrentTime).ToString("00") + "s";
         }

@@ -19,6 +19,26 @@ namespace SurvivorDemo.Gameplay
             _currentIndex = 0;
         }
 
+        private void Start()
+        {
+            EventManager.Instance?.Emit(new WeaponChangedEvent(CurrentWeaponId));
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                CycleWeapon();
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1) && ownedWeaponIds.Length > 0) SelectWeapon(ownedWeaponIds[0]);
+
+            if (Input.GetKeyDown(KeyCode.Alpha2) && ownedWeaponIds.Length > 1) SelectWeapon(ownedWeaponIds[1]);
+
+            if (Input.GetKeyDown(KeyCode.Alpha3) && ownedWeaponIds.Length > 2) SelectWeapon(ownedWeaponIds[2]);
+        }
+
         public void SelectWeapon(string id)
         {
             for (int i = 0; i < ownedWeaponIds.Length; i++)

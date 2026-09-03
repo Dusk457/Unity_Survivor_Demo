@@ -39,6 +39,7 @@ namespace SurvivorDemo.Gameplay
 
         private void Start()
         {
+            EventManager.Instance?.On<WeaponChangedEvent>(OnWeaponChanged);
             SetupWeapon(initialWeaponId);
         }
 
@@ -81,8 +82,18 @@ namespace SurvivorDemo.Gameplay
             }
             if (_weapon == null) return;
 
-            EventManager.Instance.Emit(new WeaponChangedEvent(id));
             _fireTimer = 0f;
+        }
+
+        private void OnWeaponChanged(WeaponChangedEvent e)
+        {
+            SetupWeapon(e.WeaponId);
+        }
+
+        private void OnDestroy()
+        {
+            if (EventManager.Instance != null)
+                EventManager.Instance.Off<WeaponChangedEvent>(OnWeaponChanged);
         }
 
         public void Attack()
