@@ -27,6 +27,8 @@ namespace SurvivorDemo.Gameplay
         private PlayerStateMachine _sm;
         private Transform _cachedTransform;
         private Animator _anim;
+        private SpriteRenderer _sprite;
+        private Camera _cam;
         private bool _dead;
 
         private void Awake()
@@ -34,6 +36,8 @@ namespace SurvivorDemo.Gameplay
             _sm = GetComponent<PlayerStateMachine>();
             _cachedTransform = transform;
             _anim = GetComponent<Animator>();
+            _sprite = GetComponentInChildren<SpriteRenderer>();
+            _cam = Camera.main;
             CurrentHp = maxHp;
         }
 
@@ -49,7 +53,6 @@ namespace SurvivorDemo.Gameplay
             if (GameManager.Instance == null || GameManager.Instance.State != E_GameState.Playing) return;
             _fireTimer -= Time.deltaTime;
 
-            // 读取输入
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
             Vector2 move = new Vector2(h, v).normalized;
@@ -61,6 +64,12 @@ namespace SurvivorDemo.Gameplay
             {
                 _anim.SetFloat("Speed", move.sqrMagnitude > 0f ? 1f : 0f);
             }
+
+            if (_sprite != null && Mathf.Abs(h) > 0.01f)
+            {
+                _sprite.flipX = h < 0f;
+            }
+
             if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
             {
                 _sm.SetAttack();
