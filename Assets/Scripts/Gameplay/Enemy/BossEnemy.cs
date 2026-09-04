@@ -43,8 +43,14 @@ namespace SurvivorDemo.Gameplay
 
         public void DealDamage()
         {
+            if (player == null) return;
+
+            float range = _enraged ? attack2Range : attackRange;
+            if (Vector2.Distance(transform.position, player.position) > range)
+                return;
+
             float dmg = _enraged ? attack2Damage : attack1Damage;
-            PlayerController pc = player != null ? player.GetComponent<PlayerController>() : null;
+            PlayerController pc = player.GetComponent<PlayerController>();
             if (pc != null) pc.TakeDamage(dmg);
         }
 
