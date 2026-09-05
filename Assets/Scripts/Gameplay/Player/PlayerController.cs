@@ -7,6 +7,12 @@ namespace SurvivorDemo.Gameplay
 {
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Current 
+        { 
+            get; 
+            private set;
+        } 
+
         [Header("属性配置")]
         public float moveSpeed = 5f;
         public float maxHp = 100f;
@@ -33,6 +39,7 @@ namespace SurvivorDemo.Gameplay
 
         private void Awake()
         {
+            Current = this;
             _sm = GetComponent<PlayerStateMachine>();
             _cachedTransform = transform;
             _anim = GetComponent<Animator>();
@@ -72,7 +79,7 @@ namespace SurvivorDemo.Gameplay
 
             if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
             {
-                _sm.SetAttack();
+                Attack();
             }
         }
 
@@ -103,6 +110,7 @@ namespace SurvivorDemo.Gameplay
         {
             if (EventManager.Instance != null)
                 EventManager.Instance.Off<WeaponChangedEvent>(OnWeaponChanged);
+            if (Current == this) Current = null;
         }
 
         public void Attack()
@@ -128,7 +136,7 @@ namespace SurvivorDemo.Gameplay
             }
 
             int count = Mathf.Max(1, _weapon.count);
-            Vector2 aimDir = ((Vector2)(Camera.main.ScreenToWorldPoint(Input.mousePosition) - _cachedTransform.position)).normalized;
+            Vector2 aimDir = ((Vector2)((_cam != null ? _cam : Camera.main).ScreenToWorldPoint(Input.mousePosition) - _cachedTransform.position)).normalized;
             float baseAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
             float totalSpread = _weapon.spreadAngle;
 
