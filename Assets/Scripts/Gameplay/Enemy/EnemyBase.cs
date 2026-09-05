@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using SurvivorDemo.Managers;
 using SurvivorDemo.Data;
+using SurvivorDemo.Utils;
 
 
 namespace SurvivorDemo.Gameplay
@@ -17,6 +18,9 @@ namespace SurvivorDemo.Gameplay
         protected Rigidbody2D rb;
         protected Animator anim;
         protected bool dead;
+        protected ObjectPool<EnemyBase> pool;
+
+        public void SetPool(ObjectPool<EnemyBase> p) => pool = p;
 
         protected virtual void Awake()
         {
@@ -30,6 +34,22 @@ namespace SurvivorDemo.Gameplay
             hp = cfg.maxHp;
             rb = GetComponent<Rigidbody2D>();
             dead = false;
+
+            if (anim != null) 
+            { 
+                anim.Rebind(); 
+                anim.Update(0f);
+            }
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+            }
+            Collider2D col = GetComponent<Collider2D>();
+            if (col != null)
+            {
+                col.enabled = true;
+            }
+            StopAllCoroutines();
         }
 
         protected virtual void FixedUpdate()
@@ -68,7 +88,14 @@ namespace SurvivorDemo.Gameplay
         private IEnumerator DisableAfterAnim()
         {
             yield return new WaitForSeconds(0.6f);
-            Destroy(gameObject);
+            if (pool != null)
+            {
+                pool.Despawn(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)

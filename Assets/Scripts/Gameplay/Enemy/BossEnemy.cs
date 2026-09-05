@@ -1,4 +1,5 @@
 using UnityEngine;
+using SurvivorDemo.Data;
 
 namespace SurvivorDemo.Gameplay
 {
@@ -22,6 +23,14 @@ namespace SurvivorDemo.Gameplay
         private void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
+
+        public override void Init(EnemyConfig cfg, Transform target)
+        {
+            base.Init(cfg, target);
+            _attackCd = 0f;
+            _attacking = false;
+            _enraged = false;
         }
 
         private void Update()

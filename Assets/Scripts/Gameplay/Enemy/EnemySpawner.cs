@@ -16,7 +16,7 @@ namespace SurvivorDemo.Gameplay
         public float minInterval = 1f;                  
         public float maxInterval = 3f;                  
         [Range(0f, 1f)] public float batChance = 0.3f;  
-        public float bossStartDelay = 90f;              
+        public float bossStartDelay = 30f;              
 
         private Transform _player;
         private Dictionary<string, EnemyConfig> _enemyConfigs;
@@ -34,6 +34,7 @@ namespace SurvivorDemo.Gameplay
         private void Start()
         {
             EventManager.Instance?.On<GameStateChangedEvent>(OnGameStateChanged);
+            BuildPools();
             if (GameManager.Instance != null && GameManager.Instance.State == E_GameState.Playing)
                 StartLevel();
         }
@@ -55,17 +56,16 @@ namespace SurvivorDemo.Gameplay
 
         public void StartLevel()
         {
-            _player = GameObject.FindGameObjectWithTag("Player")?.transform;
-            if (_player == null) 
-            { 
-                Debug.LogWarning("[Spawner] 找不到 Player"); 
+            if (_player == null)
+            {
+                _player = GameObject.FindGameObjectWithTag("Player")?.transform;
+                Debug.LogWarning("[Spawner] 找不到 Player");
                 return;
             }
 
             if (_spawning) return;
 
             ClearPools();
-            BuildPools();
             _spawning = true;
 
             StartCoroutine(SpawnLoop());
@@ -123,6 +123,7 @@ namespace SurvivorDemo.Gameplay
             Vector2 pos = (Vector2)_player.position + Random.insideUnitCircle.normalized * spawnRadius;
             EnemyBase enemy = pool.Spawn(pos, Quaternion.identity);
             enemy.Init(cfg, _player);
+            enemy.SetPool(pool);
         }
 
         private void ClearPools()
